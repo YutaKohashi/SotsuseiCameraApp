@@ -7,15 +7,15 @@ package jp.yuta.kohashi.sotsuseicameraapp.utils
  */
 
 object Util{
-
-
-    /**
-     * ブロードキャストレシーバが登録されているか
-     * 引数:Intentクラスの定数を使用
-     */
-    fun registeredBroadcastReceiver(receiver:String):Boolean{
-        return false
-    }
-
+//
+//
+//    /**
+//     * ブロードキャストレシーバが登録されているか
+//     * 引数:Intentクラスの定数を使用
+//     */
+//    fun registeredBroadcastReceiver(receiver:String):Boolean{
+//        return false
+//    }
+//
 
 }
