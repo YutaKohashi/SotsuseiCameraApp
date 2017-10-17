@@ -15,6 +15,7 @@ import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
 class LoginActivity : BaseActivity() {
 
     companion object : StartActivity {
+
         override fun start(activity: Activity) = activity.startActivity(Intent(activity, LoginActivity::class.java))
     }
 

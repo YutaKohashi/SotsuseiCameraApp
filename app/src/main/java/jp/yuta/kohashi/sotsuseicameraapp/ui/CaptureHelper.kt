@@ -22,7 +22,7 @@ object CaptureHelper {
         thread {
             targetView.isDrawingCacheEnabled = true      // キャッシュを取得する設定にする
             targetView.destroyDrawingCache()             // 既存のキャッシュをクリアする
-            h.post { callback.invoke(targetView.drawingCache) }
+            h.post { targetView.drawingCache?.let{callback.invoke(it)} }
         }
     }
 
