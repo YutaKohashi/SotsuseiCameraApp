@@ -64,4 +64,10 @@ class RegularlyScheduler {
     fun onResume() {
         if (running && mTimer == null) scheduleAction()
     }
+
+    fun onPause(){
+        mTimer?.cancel()
+        mTimer = null
+        mHandler = null
+    }
 }

@@ -17,7 +17,7 @@ object CaptureHelper {
      * targetViewに指定されたViewのキャプチャを取得する
      * callbackでbitmapが帰ってくる
      */
-    fun takeCapture(targetView: View, callback: ((Bitmap?) -> Unit)) {
+    fun takeCapture(targetView: View, callback: ((Bitmap) -> Unit)) {
         val h = Handler()
         thread {
             targetView.isDrawingCacheEnabled = true      // キャッシュを取得する設定にする
