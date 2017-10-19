@@ -3,13 +3,14 @@ package jp.yuta.kohashi.sotsuseicameraapp.netowork.api
 import io.reactivex.Observable
 import jp.yuta.kohashi.sotsuseicameraapp.netowork.api.model.Model
 import okhttp3.Interceptor
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
+import retrofit2.http.*
 
 
 /**
@@ -22,17 +23,24 @@ interface SotsuseiJsonApiService {
     @GET("")
     fun postImage(@Body fileName: String): Observable<Model.Result>
 
+    @Multipart
+    @POST("/")
+    fun postImage(@Part image:MultipartBody.Part, @Part("sId") storeId:RequestBody): Observable<Model.Result>
 
-    companion object {
+    @Multipart
+    @POST("/")
+    fun postImage(@Part image:MultipartBody.Part): Observable<Model.Result>
 
-        private val BASE_URL = ""
+    companion object    {
+
+        private val BASE_URL = "http://comp.ecc.ac.jp"
 
         fun create(): SotsuseiJsonApiService {
 
             val interceptor = Interceptor { chain ->
                 chain.proceed(chain.request().newBuilder()
                         .header("Accept", "application/json")
-//                        .method(chain.request().method(), chain.request().body())
+                        .method(chain.request().method(), chain.request().body())
                         .build())
             }
 
