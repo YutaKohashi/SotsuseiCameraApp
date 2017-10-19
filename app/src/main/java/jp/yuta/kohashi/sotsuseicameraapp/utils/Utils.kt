@@ -1,12 +1,15 @@
 package jp.yuta.kohashi.sotsuseicameraapp.utils
 
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
+
 /**
  * Author : yutakohashi
  * Project name : SotsuseiClientApp
  * Date : 10 / 10 / 2017
  */
 
-object Util{
+object Utils {
 //
 //
 //    /**
@@ -17,5 +20,11 @@ object Util{
 //        return false
 //    }
 //
+
+    fun bmp2byte(bitmap:Bitmap):ByteArray{
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        return stream.toByteArray()
+    }
 
 }
