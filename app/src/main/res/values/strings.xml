@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">SotsuseiCameraApp</string>
 
+    <string name="camera_access_exception">カメラへのアクセスに失敗しました</string>
+    <string name="no_permission">権限がありません</string>
+
     <string name="already_running_servce">すでに実行しています</string>
     <string name="success_runnning_service">開始しました</string>
     <string name="already_stop_service">すでに終了しています</string>
