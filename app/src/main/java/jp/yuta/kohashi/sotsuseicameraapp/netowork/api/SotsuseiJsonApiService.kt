@@ -24,8 +24,8 @@ interface SotsuseiJsonApiService {
     fun postImage(@Body fileName: String): Observable<Model.Result>
 
     @Multipart
-    @POST("/")
-    fun postImage(@Part image:MultipartBody.Part, @Part("sId") storeId:RequestBody): Observable<Model.Result>
+    @POST("/api/images/")
+    fun postImage(@Part image:MultipartBody.Part, @Part("imageId") storeId:RequestBody): Observable<Model.Result>
 
     @Multipart
     @POST("/")
@@ -33,13 +33,14 @@ interface SotsuseiJsonApiService {
 
     companion object    {
 
-        private val BASE_URL = "http://comp.ecc.ac.jp"
+        private val BASE_URL = "http://172.22.134.12:8000"
 
         fun create(): SotsuseiJsonApiService {
 
             val interceptor = Interceptor { chain ->
                 chain.proceed(chain.request().newBuilder()
-                        .header("Accept", "application/json")
+                        .header("Accept", "*/*")
+//                        .header("Content-Type","application/json")
                         .method(chain.request().method(), chain.request().body())
                         .build())
             }
