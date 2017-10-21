@@ -5,20 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
 import android.hardware.camera2.*
+import android.hardware.camera2.CameraAccessException
+import android.media.ImageReader
+import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceView
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraCaptureSession
-import android.media.ImageReader
-import android.os.Handler
-import java.util.*
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.params.StreamConfigurationMap
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
-import android.util.Size
 
 
 /**
@@ -92,10 +84,8 @@ class CameraView : SurfaceView {
         super.onAttachedToWindow()
         Log.d("CameraView", "onAttachedToWindow")
 
-
-
-//        mImageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES);
-//        mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
+        mImageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES);
+        mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
 
         try {
             openCamera()
@@ -138,20 +128,20 @@ class CameraView : SurfaceView {
             manager.openCamera(it, OpenCameraCallback(), null)
         } ?: throw CameraAccessException(CameraAccessException.CAMERA_ERROR)
 
-        val characteristics = manager.getCameraCharacteristics(backCameraId)
-        val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-        val largest = Collections.max(map.getOutputSizes(ImageFormat.JPEG).asList(), CompareSizesByArea())
-        mImageReader = ImageReader.newInstance(largest.width, largest.height, ImageFormat.JPEG, MAX_IMAGES);
-        mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
+//        val characteristics = manager.getCameraCharacteristics(backCameraId)
+//        val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+////        val largest = Collections.max(map.getOutputSizes(ImageFormat.JPEG).asList(), CompareSizesByArea())
+////        mImageReader = ImageReader.newInstance(largest.width, largest.height, ImageFormat.JPEG, MAX_IMAGES);
+////        mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
     }
 
 
-    internal class CompareSizesByArea : Comparator<Size> {
-        // We cast here to ensure the multiplications won't overflow
-        override fun compare(lhs: Size, rhs: Size): Int =
-                java.lang.Long.signum(lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height)
-
-    }
+//    internal class CompareSizesByArea : Comparator<Size> {
+//        // We cast here to ensure the multiplications won't overflow
+//        override fun compare(lhs: Size, rhs: Size): Int =
+//                java.lang.Long.signum(lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height)
+//
+//    }
 
 
     // region inner classes
@@ -187,6 +177,7 @@ class CameraView : SurfaceView {
                 mPreviewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
                 mPreviewRequestBuilder?.addTarget(holder.surface)
                 mPreviewRequestBuilder?.addTarget(mImageReader?.surface)
+                mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO)
                 mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START)
                 mPreviewRequest = mPreviewRequestBuilder?.build()
                 // キャプチャーセッションの開始(セッション開始後に第2引数のコールバッククラスが呼ばれる)
