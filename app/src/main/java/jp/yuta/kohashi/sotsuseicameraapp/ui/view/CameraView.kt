@@ -1,17 +1,24 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageFormat
 import android.hardware.camera2.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceView
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraAccessException
-import android.view.Surface
-import android.view.SurfaceHolder
 import android.hardware.camera2.CameraCaptureSession
+import android.media.ImageReader
+import android.os.Handler
+import java.util.*
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.params.StreamConfigurationMap
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import android.util.Size
 
 
 /**
@@ -29,38 +36,19 @@ class CameraView : SurfaceView {
     private var mBackCameraDevice: CameraDevice? = null
     private var mBackCameraSession: CameraCaptureSession? = null
     private var mPreviewRequestBuilder: CaptureRequest.Builder? = null
+    private var mPreviewRequest: CaptureRequest? = null
 
     private var mCameraAccessExceptionCallback: (() -> Unit)? = null
     private var mNoCameraPermissionCallback: (() -> Unit)? = null
 
+    private var mImageReader: ImageReader? = null
+    private val IMAGE_WIDTH = 320
+    private val IMAGE_HEIGHT = 240
+    private val MAX_IMAGES = 5
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        Log.d("CameraView","onAttachedToWindow")
-        val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    private var mBackgroundHandler = Handler()
+    private var mLatestBmp: Bitmap? = null
 
-        try {
-            var backCameraId: String? = null
-
-            manager.cameraIdList?.
-                    filter { manager.getCameraCharacteristics(it).get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_BACK }?.
-                    forEach { backCameraId = it }
-
-            backCameraId?.let {
-                try {
-                    holder.setFixedSize(width, height);
-
-                    manager.openCamera(it, OpenCameraCallback(), null)
-                } catch (e: SecurityException) {
-                    mNoCameraPermissionCallback?.invoke(); return@let
-                }
-            } ?: mCameraAccessExceptionCallback?.invoke();return
-
-        } catch (e: CameraAccessException) {
-            //例外処理を記述
-            mCameraAccessExceptionCallback?.invoke()
-        }
-    }
 
     fun setOnCameraAccessExceptionCallback(callback: () -> Unit) {
         mCameraAccessExceptionCallback = callback
@@ -70,17 +58,55 @@ class CameraView : SurfaceView {
         mNoCameraPermissionCallback = callback
     }
 
-    fun startPreview() {
 
+    fun getPreviewBitmap(callback: (Bitmap?) -> Unit) {
+        callback.invoke(mLatestBmp)
     }
 
-    fun stopPreview() {
-
+    fun getPreviewNonNullBitmap(callback: (Bitmap) -> Unit) {
+        mLatestBmp?.let { callback.invoke(it) }
     }
 
+    /**
+     * ImageReader
+     */
+    private val mImageListener = ImageReader.OnImageAvailableListener { imageReader ->
 
-    fun getPreviewBitmap(callback: (Bitmap) -> Unit){
-//        callback.invoke(Bitmap())
+        fun imageReader2bmp(imageReader: ImageReader): Bitmap? {
+            val imageBytes = imageReader.acquireLatestImage()?.run {
+                val imageBuf = planes[0].buffer
+                val imageBytes = ByteArray(imageBuf.remaining())
+                imageBuf.get(imageBytes)
+                close()
+                imageBytes
+            }
+            return imageBytes?.let { BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size) }
+        }
+
+//        val before = mLatestBmp
+        mLatestBmp = imageReader2bmp(imageReader)
+//        before?.recycle()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        Log.d("CameraView", "onAttachedToWindow")
+
+
+
+//        mImageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES);
+//        mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
+
+        try {
+            openCamera()
+        } catch (e: CameraAccessException) {
+            Log.d("CameraView", "CameraAccessException")
+            mNoCameraPermissionCallback?.invoke()
+        } catch (e: SecurityException) {
+            Log.d("CameraView", "SecurityException")
+            mCameraAccessExceptionCallback?.invoke()
+//            throw SecurityException(e)
+        }
     }
 
     /**
@@ -97,6 +123,34 @@ class CameraView : SurfaceView {
             it.close()
             mBackCameraDevice?.close()
         }
+        mLatestBmp?.recycle()
+    }
+
+    @Throws(SecurityException::class, CameraAccessException::class)
+    private fun openCamera() {
+        val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        var backCameraId: String? = null
+        manager.cameraIdList?.
+                filter { manager.getCameraCharacteristics(it).get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_BACK }?.
+                forEach { backCameraId = it }
+        backCameraId?.let {
+            holder.setFixedSize(width, height);
+            manager.openCamera(it, OpenCameraCallback(), null)
+        } ?: throw CameraAccessException(CameraAccessException.CAMERA_ERROR)
+
+        val characteristics = manager.getCameraCharacteristics(backCameraId)
+        val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+        val largest = Collections.max(map.getOutputSizes(ImageFormat.JPEG).asList(), CompareSizesByArea())
+        mImageReader = ImageReader.newInstance(largest.width, largest.height, ImageFormat.JPEG, MAX_IMAGES);
+        mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
+    }
+
+
+    internal class CompareSizesByArea : Comparator<Size> {
+        // We cast here to ensure the multiplications won't overflow
+        override fun compare(lhs: Size, rhs: Size): Int =
+                java.lang.Long.signum(lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height)
+
     }
 
 
@@ -104,16 +158,37 @@ class CameraView : SurfaceView {
 
     private inner class OpenCameraCallback : CameraDevice.StateCallback() {
         override fun onOpened(cameraDevice: CameraDevice) {
+            createCameraSession(cameraDevice)
+        }
+
+        override fun onDisconnected(cameraDevice: CameraDevice) {
+            // 切断時の処理を記載
+            mBackCameraDevice?.close()
+            mBackCameraDevice = null
+        }
+
+        override fun onError(cameraDevice: CameraDevice, error: Int) {
+            // エラー時の処理を記載
+            mBackCameraDevice?.close()
+            mBackCameraDevice = null
+        }
+
+        /**
+         *
+         */
+        private fun createCameraSession(cameraDevice: CameraDevice) {
             mBackCameraDevice = cameraDevice
 
             // プレビュー用のSurfaceViewをリストに登録
-            val surfaceList = mutableListOf(holder.surface)
+            val surfaceList = mutableListOf(holder.surface, mImageReader?.surface)
 
             try {
                 // プレビューリクエストの設定（SurfaceViewをターゲットに）
                 mPreviewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
                 mPreviewRequestBuilder?.addTarget(holder.surface)
-
+                mPreviewRequestBuilder?.addTarget(mImageReader?.surface)
+                mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START)
+                mPreviewRequest = mPreviewRequestBuilder?.build()
                 // キャプチャーセッションの開始(セッション開始後に第2引数のコールバッククラスが呼ばれる)
                 cameraDevice.createCaptureSession(surfaceList, CameraCaptureSessionCallback(), null)
 
@@ -123,30 +198,23 @@ class CameraView : SurfaceView {
             }
         }
 
-        override fun onDisconnected(cameraDevice: CameraDevice) {
-            // 切断時の処理を記載
-        }
-
-        override fun onError(cameraDevice: CameraDevice, error: Int) {
-            // エラー時の処理を記載
-        }
-    }
-
-    private inner class CameraCaptureSessionCallback : CameraCaptureSession.StateCallback() {
-        override fun onConfigureFailed(session: CameraCaptureSession?) {
-        }
-
-        override fun onConfigured(session: CameraCaptureSession?) {
-            mBackCameraSession = session
-            try {
-                mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START)
-                session?.setRepeatingRequest(mPreviewRequestBuilder?.build(), CaptureCallback(), null)
-            } catch (e: CameraAccessException) {
-                Log.e("CameraView", "failure stop repeating\n" + e.toString())
-                mCameraAccessExceptionCallback?.invoke()
+        private inner class CameraCaptureSessionCallback : CameraCaptureSession.StateCallback() {
+            override fun onConfigureFailed(session: CameraCaptureSession?) {
             }
-        }
 
+            override fun onConfigured(session: CameraCaptureSession?) {
+                if (mBackCameraDevice == null) return
+
+                mBackCameraSession = session
+                try {
+                    session?.setRepeatingRequest(mPreviewRequest, CaptureCallback(), null)
+                } catch (e: CameraAccessException) {
+                    Log.e("CameraView", "failure stop repeating\n" + e.toString())
+                    mCameraAccessExceptionCallback?.invoke()
+                }
+            }
+
+        }
     }
 
 
