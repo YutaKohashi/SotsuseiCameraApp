@@ -1,5 +1,6 @@
 package jp.yuta.kohashi.sotsuseicameraapp
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import jp.yuta.kohashi.sotsuseicameraapp.netowork.ShutterImgHelper
@@ -21,6 +22,7 @@ class App : Application() {
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
             get
             private set
