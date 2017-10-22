@@ -8,11 +8,8 @@ import jp.yuta.kohashi.sotsuseicameraapp.netowork.api.exception.ApiException
 import jp.yuta.kohashi.sotsuseicameraapp.netowork.api.model.Model
 import jp.yuta.kohashi.sotsuseicameraapp.utils.Utils
 import okhttp3.MediaType
-import okhttp3.RequestBody
 import okhttp3.MultipartBody
-
-
-
+import okhttp3.RequestBody
 
 
 /**
