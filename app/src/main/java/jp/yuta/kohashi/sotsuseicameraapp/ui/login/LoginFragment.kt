@@ -3,6 +3,7 @@ package jp.yuta.kohashi.sotsuseicameraapp.ui.login
 import android.os.Bundle
 import jp.yuta.kohashi.sotsuseicameraapp.R
 import jp.yuta.kohashi.sotsuseicameraapp.ui.BaseFragment
+import jp.yuta.kohashi.sotsuseicameraapp.ui.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
@@ -23,7 +24,7 @@ class LoginFragment: BaseFragment(){
 
     override fun setEvent() {
         loginButton.setOnClickListener {
-//            HomeActivity.start(activity)
+            HomeActivity.start(activity)
 
         }
     }

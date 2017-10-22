@@ -1,13 +1,9 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui.running
 
-//import com.wonderkiln.camerakit.CameraListener
-//import com.otaliastudios.cameraview.Audio
-//import com.otaliastudios.cameraview.CameraListener
-//import com.wonderkiln.camerakit.CameraKit
-//import com.otaliastudios.cameraview.CameraView
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log
-import android.widget.Toast
+import android.widget.ImageView
 import jp.yuta.kohashi.fakelineapp.managers.FileManager
 import jp.yuta.kohashi.sotsuseicameraapp.R
 import jp.yuta.kohashi.sotsuseicameraapp.netowork.api.SotsuseiApiManager
@@ -16,12 +12,12 @@ import jp.yuta.kohashi.sotsuseicameraapp.ui.RegularlyScheduler
 import kotlinx.android.synthetic.main.fragment_running.*
 import kotlin.concurrent.thread
 
+
 /**
  * Author : yutakohashi
  * Project name : SotsuseiClientApp
  * Date : 29 / 09 / 2017
  */
-
 class RunningFragment : BaseFragment() {
     private val TAG = RunningFragment::class.java.simpleName
 
@@ -29,7 +25,7 @@ class RunningFragment : BaseFragment() {
 
 
     companion object {
-        private val PERIOD_TIME = 3000L
+        private val PERIOD_TIME = 2500L
     }
 
     override val sLayoutRes: Int
@@ -37,6 +33,7 @@ class RunningFragment : BaseFragment() {
 
     private var mRegularlyScheduler: RegularlyScheduler? = null
     private var count: Int = 0
+
     /**
      * キャプチャ後のコールバック
      */
@@ -44,13 +41,15 @@ class RunningFragment : BaseFragment() {
         Log.d(TAG, "bitmap callback  :  " + count.toString())
         count += 1
 
+        imageView.release()
+
+        val previewBmp = bitmap.copy(Bitmap.Config.ARGB_8888, false)
         thread {
-            fileManger.deleteFileExternalStorage("/", "image1.jpg")
-            fileManger.saveBitmapExternalStorage("/", "image1.jpg", bitmap)
+//            fileManger.deleteFileExternalStorage("/", "image1.jpg")
+//            fileManger.saveBitmapExternalStorage("/", "image1.jpg", previewBmp)
         }
-        imageView.setImageBitmap(bitmap)
+        imageView.setImageBitmap(previewBmp)
         thread {
-            //            Toast.makeText(activity, "callback", Toast.LENGTH_SHORT).show()
             SotsuseiApiManager.uploadImage(bitmap, "", { model, error, type ->
                 if (!error) Log.d(TAG, "success uploaded image")
                 else Log.d(TAG, "failure uploaded image")
@@ -59,21 +58,6 @@ class RunningFragment : BaseFragment() {
     }
 
     override fun setEvent() {
-//        cameraView.addCameraListener(cameraListener(callback))
-//
-//        mRegularlyScheduler = RegularlyScheduler(
-//                { cameraView.captureSnapshot() },
-//                3000L,
-//                PERIOD_TIME
-//        ).start()
-
-//        cameraView.setCameraListener(cameraListener(callback))
-//        cameraView.setMethod(CameraKit.Constants.METHOD_STILL)
-//        mRegularlyScheduler = RegularlyScheduler(
-//                { cameraView.captureImage() },
-//                3000L,
-//                PERIOD_TIME
-//        ).start()
 
         mRegularlyScheduler = RegularlyScheduler(
                 { cameraView.getPreviewNonNullBitmap(callback) },
@@ -85,26 +69,18 @@ class RunningFragment : BaseFragment() {
         }
     }
 
-//
-//    private fun cameraListener(callback: (Bitmap) -> Unit) = ExtensionCameraListener(callback)
-//
-//    private class ExtensionCameraListener(private val callback: (Bitmap) -> Unit) : CameraListener() {
-//        override fun onPictureTaken(jpeg: ByteArray?) {
-//            jpeg?.let { CameraUtils.decodeBitmap(it, { callback.invoke(it) }) }
-//        }
-//    }
-
     override fun onResume() {
         super.onResume()
         mRegularlyScheduler?.onResume()
 //        cameraView?.start()
-
+//        cameraView?.onResume()
     }
 
     override fun onPause() {
         super.onPause()
         mRegularlyScheduler?.onPause()
         cameraView?.onPause()
+        imageView?.release()
     }
 
 
@@ -112,5 +88,11 @@ class RunningFragment : BaseFragment() {
         super.onDestroy()
         SotsuseiApiManager.dispose()
 //        cameraView?.destroy()
+    }
+
+    private fun ImageView.release() {
+        drawable?.let { (it as BitmapDrawable).bitmap?.recycle() }
+        setImageDrawable(null)
+        setImageBitmap(null)
     }
 }

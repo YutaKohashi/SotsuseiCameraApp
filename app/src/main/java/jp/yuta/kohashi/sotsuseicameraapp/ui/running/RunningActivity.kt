@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.WindowManager
 import jp.yuta.kohashi.sotsuseicameraapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
 
@@ -20,6 +19,7 @@ class RunningActivity : BaseActivity() {
     }
 
     override  val KEEP_SCREEN_ON: Boolean = true
+    override val HIDE_STATUSBAR: Boolean = true
 
     override val fragment: Fragment?
         get() = RunningFragment()

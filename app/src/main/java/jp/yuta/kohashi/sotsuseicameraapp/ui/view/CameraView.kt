@@ -11,11 +11,6 @@ import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceView
-import android.graphics.SurfaceTexture
-import android.hardware.camera2.params.StreamConfigurationMap
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraManager
-import android.util.Size
 
 
 /**
@@ -24,6 +19,7 @@ import android.util.Size
  * Date : 19 / 10 / 2017
  */
 class CameraView : SurfaceView {
+    private val TAG = CameraView::class.java.simpleName
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -82,15 +78,12 @@ class CameraView : SurfaceView {
             return imageBytes?.let { BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size) }
         }
 
-//        val before = mLatestBmp
+        val before = mLatestBmp
         mLatestBmp = imageReader2bmp(imageReader)
-//        before?.recycle()
+        before?.recycle()
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        Log.d("CameraView", "onAttachedToWindow")
-
+    private fun setUp(){
         mImageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES);
         mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
 
@@ -105,8 +98,10 @@ class CameraView : SurfaceView {
         }
     }
 
-    fun onResume() {
-
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        Log.d("CameraView", "onAttachedToWindow")
+        if(mBackCameraSession == null)setUp()
     }
 
     /**
@@ -123,8 +118,10 @@ class CameraView : SurfaceView {
             it.close()
             mBackCameraDevice?.close()
         }
+        mBackCameraSession = null
         mLatestBmp?.recycle()
         mLatestBmp = null
+        mImageReader = null
     }
 
     @Throws(SecurityException::class, CameraAccessException::class)

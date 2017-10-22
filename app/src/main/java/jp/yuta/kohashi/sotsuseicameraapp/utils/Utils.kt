@@ -1,6 +1,10 @@
 package jp.yuta.kohashi.sotsuseicameraapp.utils
 
 import android.graphics.Bitmap
+import android.support.annotation.DrawableRes
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import jp.yuta.kohashi.sotsuseicameraapp.App
 import java.io.ByteArrayOutputStream
 
 /**
@@ -25,6 +29,19 @@ object Utils {
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         return stream.toByteArray()
+    }
+
+    /**
+     * Glideを使用してDrawableリソースをimageviewに適用
+     * @param id
+     * @param targetImageView
+     */
+    fun setImageByGlide(@DrawableRes id: Int, targetImageView: ImageView) {
+        Glide.with(App.context).load(id).into(targetImageView)
+    }
+
+    fun setImageByGlide(bmp: Bitmap, targetImageView: ImageView) {
+        Glide.with(App.context).load(bmp).into(targetImageView)
     }
 
 }
