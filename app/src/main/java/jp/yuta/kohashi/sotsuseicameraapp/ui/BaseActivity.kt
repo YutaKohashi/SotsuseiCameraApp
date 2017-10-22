@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 
 /**
@@ -29,6 +30,10 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     open protected val contentViewFromView: View? = null
 
+    /**
+     *  Keep screen on flag
+     */
+    open protected val KEEP_SCREEN_ON = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,5 +55,15 @@ abstract class BaseActivity : AppCompatActivity() {
      * ボタンのクリック処理などを中心に記述
      */
     abstract fun setEvent()
+
+    override fun onResume() {
+        super.onResume()
+        if(KEEP_SCREEN_ON) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if(KEEP_SCREEN_ON) window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
 
 }
