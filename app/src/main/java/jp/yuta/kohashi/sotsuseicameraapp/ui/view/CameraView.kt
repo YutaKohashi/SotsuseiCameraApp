@@ -11,6 +11,11 @@ import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceView
+import android.graphics.SurfaceTexture
+import android.hardware.camera2.params.StreamConfigurationMap
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
+import android.util.Size
 
 
 /**
@@ -34,8 +39,10 @@ class CameraView : SurfaceView {
     private var mNoCameraPermissionCallback: (() -> Unit)? = null
 
     private var mImageReader: ImageReader? = null
-    private val IMAGE_WIDTH = 320
-    private val IMAGE_HEIGHT = 240
+    //    private val IMAGE_WIDTH = 960
+//    private val IMAGE_HEIGHT = 720
+    private val IMAGE_WIDTH = 1600
+    private val IMAGE_HEIGHT = 1200
     private val MAX_IMAGES = 5
 
     private var mBackgroundHandler = Handler()
@@ -90,13 +97,16 @@ class CameraView : SurfaceView {
         try {
             openCamera()
         } catch (e: CameraAccessException) {
-            Log.d("CameraView", "CameraAccessException")
+            Log.d("CameraView", "failure openCamera" + e.toString())
             mNoCameraPermissionCallback?.invoke()
         } catch (e: SecurityException) {
-            Log.d("CameraView", "SecurityException")
+            Log.d("CameraView", "failure openCamera" + e.toString())
             mCameraAccessExceptionCallback?.invoke()
-//            throw SecurityException(e)
         }
+    }
+
+    fun onResume() {
+
     }
 
     /**
@@ -114,6 +124,7 @@ class CameraView : SurfaceView {
             mBackCameraDevice?.close()
         }
         mLatestBmp?.recycle()
+        mLatestBmp = null
     }
 
     @Throws(SecurityException::class, CameraAccessException::class)
@@ -213,6 +224,7 @@ class CameraView : SurfaceView {
      * カメラ撮影時に呼ばれるコールバック関数
      */
     private inner class CaptureCallback : CameraCaptureSession.CaptureCallback()
+
 
     // endregion
 }
