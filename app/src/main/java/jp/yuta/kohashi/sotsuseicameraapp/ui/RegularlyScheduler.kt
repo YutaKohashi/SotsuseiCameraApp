@@ -9,24 +9,18 @@ import kotlin.concurrent.timer
  * Project name : SotsuseiCameraApp
  * Date : 17 / 10 / 2017
  */
-class RegularlyScheduler {
+class RegularlyScheduler private constructor(val period: Long, val initialDelay: Long, val job: () -> Unit) {
 
-    private val action: () -> Unit
     private var mTimer: Timer? = null
     private var mHandler: Handler? = null
 
-    var initialDelay: Long = 0
-    var period: Long = 0
-
     private var running: Boolean = false
 
-    constructor(action: () -> Unit) : this(action, 0, 0)
-
-    constructor(action: () -> Unit, initialDelay: Long, period: Long) {
-        this.action = action
-        this.initialDelay = initialDelay
-        this.period = period
+    companion object {
+        fun build(init: Builder.() -> Unit) = Builder(init).build()
     }
+
+    private constructor(builder: Builder) : this(builder.periodTime, builder.initialDelayTime, builder.job)
 
     /**
      * タイマータスク
@@ -36,7 +30,7 @@ class RegularlyScheduler {
         mTimer = Timer()
         timer(initialDelay = initialDelay, period = period) {
             mHandler?.post {
-                action.invoke()
+                job.invoke()
             }
         }
     }
@@ -65,9 +59,33 @@ class RegularlyScheduler {
         if (running && mTimer == null) scheduleAction()
     }
 
-    fun onPause(){
+    fun onPause() {
         mTimer?.cancel()
         mTimer = null
         mHandler = null
     }
+
+    //region Builder
+
+    class Builder private constructor() {
+
+        var periodTime: Long = 0
+        var initialDelayTime: Long = 0
+        lateinit var job: () -> Unit
+
+        constructor(init: Builder.() -> Unit) : this() {
+            init()
+        }
+
+        fun periodTime(action: Builder.() -> Long) = apply { periodTime = action() }
+
+        fun initialDelayTime(action: Builder.() -> Long) = apply { initialDelayTime = action() }
+
+        fun job(action: Builder.() -> (() -> Unit)) = apply { job = action() }
+
+        fun build(): RegularlyScheduler = RegularlyScheduler(this)
+
+    }
+
+    //endregion
 }
