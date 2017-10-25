@@ -53,11 +53,11 @@ class RunningFragment2 : BaseFragment() {
     override fun setEvent() {
         cameraView.addCameraListener(cameraListener(callback))
 
-        mRegularlyScheduler = RegularlyScheduler(
-                { cameraView.captureSnapshot() },
-                3000L,
-                PERIOD_TIME
-        ).start()
+//        mRegularlyScheduler = RegularlyScheduler(
+//                { cameraView.captureSnapshot() },
+//                3000L,
+//                PERIOD_TIME
+//        ).start()
 
 //        mRegularlyScheduler = RegularlyScheduler(
 //                { CaptureHelper.takeCapture(stopButton,callback)},

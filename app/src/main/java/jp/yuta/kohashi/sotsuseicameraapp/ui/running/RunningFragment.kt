@@ -54,12 +54,11 @@ class RunningFragment : BaseFragment() {
     }
 
     override fun setEvent() {
-
-        mRegularlyScheduler = RegularlyScheduler(
-                { cameraView.getPreviewNonNullBitmap(callback) },
-                3000L,
-                PERIOD_TIME
-        ).start()
+        mRegularlyScheduler = RegularlyScheduler.Builder {
+            periodTime = PERIOD_TIME
+            initialDelayTime = 1000L
+            job = { cameraView.getPreviewNonNullBitmap(callback) }
+        }.build().start()
 
         stopButton.setOnClickListener {
             mRegularlyScheduler?.stop()

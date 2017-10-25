@@ -118,6 +118,8 @@ class CameraView : SurfaceView {
             } catch (e: CameraAccessException) {
                 Log.e("CameraView", "failure stop repeating\n" + e.toString())
                 mCameraAccessExceptionCallback?.invoke()
+            } catch (e: IllegalStateException){
+                Log.e("CameraView", "further changes are illegal\n" + e.toString())
             }
             it.close()
             mBackCameraDevice?.close()
@@ -211,8 +213,9 @@ class CameraView : SurfaceView {
     /**
      * カメラ撮影時に呼ばれるコールバック関数
      */
-    private inner class CaptureCallback : CameraCaptureSession.CaptureCallback()
+    private inner class CaptureCallback : CameraCaptureSession.CaptureCallback(){
 
+    }
 
     // endregion
 }
