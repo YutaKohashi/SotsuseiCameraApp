@@ -38,19 +38,15 @@ class RunningFragment : BaseFragment() {
      * キャプチャ後のコールバック
      */
     private val callback: (Bitmap) -> Unit = { bitmap ->
-        Log.d(TAG, "bitmap callback  :  " + count.toString())
-        count += 1
-
+        Log.d(TAG, "bitmap callback  :  " + (count++).toString())
         imageView.release()
-
-        val previewBmp = bitmap.copy(Bitmap.Config.ARGB_8888, false)
         thread {
-//            fileManger.deleteFileExternalStorage("/", "image1.jpg")
+            //            fileManger.deleteFileExternalStorage("/", "image1.jpg")
 //            fileManger.saveBitmapExternalStorage("/", "image1.jpg", previewBmp)
         }
-        imageView.setImageBitmap(previewBmp)
+        imageView.setImageBitmap(bitmap)
         thread {
-            SotsuseiApiManager.uploadImage(bitmap, "", { model, error, type ->
+            SotsuseiApiManager.uploadImage(bitmap, "storeId22223333", { model, error, type ->
                 if (!error) Log.d(TAG, "success uploaded image")
                 else Log.d(TAG, "failure uploaded image")
             })
@@ -64,6 +60,7 @@ class RunningFragment : BaseFragment() {
                 3000L,
                 PERIOD_TIME
         ).start()
+
         stopButton.setOnClickListener {
             mRegularlyScheduler?.stop()
         }
@@ -73,7 +70,7 @@ class RunningFragment : BaseFragment() {
         super.onResume()
         mRegularlyScheduler?.onResume()
 //        cameraView?.start()
-//        cameraView?.onResume()
+        cameraView?.onResume()
     }
 
     override fun onPause() {
@@ -90,6 +87,9 @@ class RunningFragment : BaseFragment() {
 //        cameraView?.destroy()
     }
 
+    /**
+     * imageviewのリソースを解放する
+     */
     private fun ImageView.release() {
         drawable?.let { (it as BitmapDrawable).bitmap?.recycle() }
         setImageDrawable(null)

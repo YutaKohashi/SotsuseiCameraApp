@@ -42,7 +42,7 @@ object SotsuseiApiManager {
     fun uploadImage(bmp:Bitmap, storeId:String, callback: (model: Model.Query?, error: Boolean, type: ApiException.ErrorType) -> Unit) {
 
         val imageBody: MultipartBody.Part = RetroUtil.bmp2Part(bmp,"imageData","fileName")
-        val storeIdBody:RequestBody = RetroUtil.string2reqbody("storeId22223333")
+        val storeIdBody:RequestBody = RetroUtil.string2reqbody(storeId)
 
         disposable = sotsuseiApiService.postImage(imageBody,storeIdBody).
                 subscribeOn(Schedulers.io()).

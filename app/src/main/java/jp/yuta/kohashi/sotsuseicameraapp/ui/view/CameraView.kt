@@ -37,8 +37,8 @@ class CameraView : SurfaceView {
     private var mImageReader: ImageReader? = null
     //    private val IMAGE_WIDTH = 960
 //    private val IMAGE_HEIGHT = 720
-    private val IMAGE_WIDTH = 1600
-    private val IMAGE_HEIGHT = 1200
+    private val IMAGE_WIDTH = 800
+    private val IMAGE_HEIGHT = 600
     private val MAX_IMAGES = 5
 
     private var mBackgroundHandler = Handler()
@@ -55,11 +55,11 @@ class CameraView : SurfaceView {
 
 
     fun getPreviewBitmap(callback: (Bitmap?) -> Unit) {
-        callback.invoke(mLatestBmp)
+        callback.invoke(mLatestBmp?.copy(Bitmap.Config.ARGB_8888, false))
     }
 
     fun getPreviewNonNullBitmap(callback: (Bitmap) -> Unit) {
-        mLatestBmp?.let { callback.invoke(it) }
+        mLatestBmp?.let { callback.invoke(it.copy(Bitmap.Config.ARGB_8888, false)) }
     }
 
     /**
@@ -78,12 +78,12 @@ class CameraView : SurfaceView {
             return imageBytes?.let { BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size) }
         }
 
-        val before = mLatestBmp
+        mLatestBmp?.recycle()
+        mLatestBmp = null
         mLatestBmp = imageReader2bmp(imageReader)
-        before?.recycle()
     }
 
-    private fun setUp(){
+    private fun setUp() {
         mImageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES);
         mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
 
@@ -101,7 +101,11 @@ class CameraView : SurfaceView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         Log.d("CameraView", "onAttachedToWindow")
-        if(mBackCameraSession == null)setUp()
+        if (mBackCameraSession == null) setUp()
+    }
+
+    fun onResume(){
+        setUp()
     }
 
     /**
@@ -118,9 +122,11 @@ class CameraView : SurfaceView {
             it.close()
             mBackCameraDevice?.close()
         }
+
         mBackCameraSession = null
         mLatestBmp?.recycle()
         mLatestBmp = null
+        mImageReader?.close()
         mImageReader = null
     }
 
@@ -135,22 +141,7 @@ class CameraView : SurfaceView {
             holder.setFixedSize(width, height);
             manager.openCamera(it, OpenCameraCallback(), null)
         } ?: throw CameraAccessException(CameraAccessException.CAMERA_ERROR)
-
-//        val characteristics = manager.getCameraCharacteristics(backCameraId)
-//        val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-////        val largest = Collections.max(map.getOutputSizes(ImageFormat.JPEG).asList(), CompareSizesByArea())
-////        mImageReader = ImageReader.newInstance(largest.width, largest.height, ImageFormat.JPEG, MAX_IMAGES);
-////        mImageReader?.setOnImageAvailableListener(mImageListener, mBackgroundHandler);
     }
-
-
-//    internal class CompareSizesByArea : Comparator<Size> {
-//        // We cast here to ensure the multiplications won't overflow
-//        override fun compare(lhs: Size, rhs: Size): Int =
-//                java.lang.Long.signum(lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height)
-//
-//    }
-
 
     // region inner classes
 
