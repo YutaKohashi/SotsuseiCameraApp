@@ -15,8 +15,8 @@ import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
 class HomeActivity : BaseActivity() {
 
 
-    companion object : StartActivity {
-        override fun start(activity: Activity) = activity.startActivity(Intent(activity, HomeActivity::class.java))
+    companion object : StartActivity<HomeActivity> {
+        override fun start(activity: Activity) = super.start(activity,HomeActivity::class.java)
     }
 
     override val fragment: Fragment?

@@ -14,8 +14,8 @@ import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
  */
 class RunningActivity : BaseActivity() {
 
-    companion object : StartActivity {
-        override fun start(activity: Activity)  = activity.startActivity(Intent(activity,RunningActivity::class.java))
+    companion object : StartActivity<RunningActivity> {
+        override fun start(activity: Activity)  = super.start(activity, RunningActivity::class.java)
     }
 
     override  val KEEP_SCREEN_ON: Boolean = true

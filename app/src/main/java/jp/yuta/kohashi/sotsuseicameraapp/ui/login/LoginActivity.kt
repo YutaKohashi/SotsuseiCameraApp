@@ -14,9 +14,9 @@ import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
 
 class LoginActivity : BaseActivity() {
 
-    companion object : StartActivity {
+    companion object : StartActivity<LoginActivity> {
 
-        override fun start(activity: Activity) = activity.startActivity(Intent(activity, LoginActivity::class.java))
+        override fun start(activity: Activity) = super.start(activity,LoginActivity::class.java)
     }
 
     override val fragment: Fragment?
