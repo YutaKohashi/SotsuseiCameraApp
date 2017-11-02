@@ -1,7 +1,6 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui.login
 
 import android.app.Activity
-import android.content.Intent
 import android.support.v4.app.Fragment
 import jp.yuta.kohashi.sotsuseicameraapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
@@ -12,15 +11,14 @@ import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
  * Date : 29 / 09 / 2017
  */
 
-class LoginActivity : BaseActivity() {
+class LoginActivity: BaseActivity(){
 
     companion object : StartActivity<LoginActivity> {
-
         override fun start(activity: Activity) = super.start(activity,LoginActivity::class.java)
     }
 
-    override val fragment: Fragment?
-        get() = LoginFragment()
+
+    override val fragment: Fragment? = LoginFragment()
 
     override fun setEvent() {
 

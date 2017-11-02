@@ -25,6 +25,7 @@ class LoginFragment: BaseFragment(){
     override fun setEvent() {
         loginButton.setOnClickListener {
             HomeActivity.start(activity)
+            activity.finish()
 
         }
     }
