@@ -1,7 +1,12 @@
 package jp.yuta.kohashi.sotsuseicameraapp.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.support.annotation.DrawableRes
+import android.support.annotation.LayoutRes
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import jp.yuta.kohashi.sotsuseicameraapp.App
@@ -13,7 +18,7 @@ import java.io.ByteArrayOutputStream
  * Date : 10 / 10 / 2017
  */
 
-object Utils {
+object Util {
 //
 //
 //    /**
@@ -42,6 +47,10 @@ object Utils {
 
     fun setImageByGlide(bmp: Bitmap, targetImageView: ImageView) {
         Glide.with(App.context).load(bmp).into(targetImageView)
+    }
+
+    fun layoutRes2View(context: Context, @LayoutRes layoutRes: Int, root: ViewGroup, attachToRoot: Boolean = false): View {
+        return LayoutInflater.from(context).inflate(layoutRes, root, attachToRoot)
     }
 
 }
