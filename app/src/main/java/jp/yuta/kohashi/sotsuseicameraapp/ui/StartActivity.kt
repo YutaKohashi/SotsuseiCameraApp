@@ -17,6 +17,6 @@ interface StartActivity<T : Activity> {
      */
     fun start(activity: Activity, clazz: Class<T>) = activity.startActivity(Intent(activity, clazz))
 
-    fun start(activity: Activity)
+    abstract fun start(activity: Activity)
 
 }

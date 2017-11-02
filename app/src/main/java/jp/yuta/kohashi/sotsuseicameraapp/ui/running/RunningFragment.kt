@@ -1,9 +1,7 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui.running
 
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.util.Log
-import android.widget.ImageView
 import jp.yuta.kohashi.fakelineapp.managers.FileManager
 import jp.yuta.kohashi.sotsuseicameraapp.R
 import jp.yuta.kohashi.sotsuseicameraapp.netowork.api.SotsuseiApiManager
@@ -63,6 +61,7 @@ class RunningFragment : BaseFragment() {
         stopButton.setOnClickListener {
             mRegularlyScheduler?.stop()
         }
+
     }
 
     override fun onResume() {
@@ -84,14 +83,5 @@ class RunningFragment : BaseFragment() {
         super.onDestroy()
         SotsuseiApiManager.dispose()
 //        cameraView?.destroy()
-    }
-
-    /**
-     * imageviewのリソースを解放する
-     */
-    private fun ImageView.release() {
-        drawable?.let { (it as BitmapDrawable).bitmap?.recycle() }
-        setImageDrawable(null)
-        setImageBitmap(null)
     }
 }

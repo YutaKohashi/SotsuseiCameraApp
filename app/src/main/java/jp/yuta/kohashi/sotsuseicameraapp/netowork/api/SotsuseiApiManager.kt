@@ -6,7 +6,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import jp.yuta.kohashi.sotsuseicameraapp.netowork.api.exception.ApiException
 import jp.yuta.kohashi.sotsuseicameraapp.netowork.api.model.Model
-import jp.yuta.kohashi.sotsuseicameraapp.utils.Utils
+import jp.yuta.kohashi.sotsuseicameraapp.utils.Util
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -74,7 +74,7 @@ object SotsuseiApiManager {
         }
 
         fun bmp2reqbody(bitmap: Bitmap): RequestBody {
-            return RequestBody.create(MediaType.parse("image/png"), Utils.bmp2byte(bitmap))
+            return RequestBody.create(MediaType.parse("image/png"), Util.bmp2byte(bitmap))
         }
 
         fun string2reqbody(string:String):RequestBody{

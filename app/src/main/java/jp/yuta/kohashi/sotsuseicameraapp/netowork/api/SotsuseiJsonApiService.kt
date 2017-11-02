@@ -33,7 +33,7 @@ interface SotsuseiJsonApiService {
 
     companion object    {
 
-        private val BASE_URL = "http://172.22.134.12:8000"
+        private val BASE_URL = "http://172.22.124.149:8000"
 
         fun create(): SotsuseiJsonApiService {
 

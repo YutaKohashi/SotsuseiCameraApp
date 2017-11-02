@@ -1,11 +1,10 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui.running
 
 import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
 import android.support.v4.app.Fragment
 import jp.yuta.kohashi.sotsuseicameraapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
+
 
 /**
  * Author : yutakohashi
@@ -19,20 +18,9 @@ class RunningActivity : BaseActivity() {
     }
 
     override  val KEEP_SCREEN_ON: Boolean = true
-    override val HIDE_STATUSBAR: Boolean = true
+    override val FULL_SCREEN: Boolean = true
 
-    override val fragment: Fragment?
-        get() = RunningFragment()
-//        get() = RunningFragment2()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        when (SotsuseiClientAppService.start(SotsuseiClientAppService::class.java)) {
-//            StateResult.ALREADY_RUNNING -> ToastHelper.alreadyRunningService()
-//            StateResult.SUCCESS_RUN -> ToastHelper.runService()
-//            else -> { }
-//        }
-    }
+    override val fragment: Fragment? = RunningFragment()
 
     override fun setEvent() {
 

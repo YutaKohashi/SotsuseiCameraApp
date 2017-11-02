@@ -213,9 +213,7 @@ class CameraView : SurfaceView {
     /**
      * カメラ撮影時に呼ばれるコールバック関数
      */
-    private inner class CaptureCallback : CameraCaptureSession.CaptureCallback(){
-
-    }
+    private inner class CaptureCallback : CameraCaptureSession.CaptureCallback()
 
     // endregion
 }
