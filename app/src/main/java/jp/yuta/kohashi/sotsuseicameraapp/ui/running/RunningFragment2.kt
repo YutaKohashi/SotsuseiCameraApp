@@ -19,7 +19,7 @@ import kotlin.concurrent.thread
  * Date : 29 / 09 / 2017
  */
 
-class RunningFragment2 : BaseFragment() {
+class RunningFragment2_kt : BaseFragment() {
     private val TAG = RunningFragment.javaClass.simpleName
 
     private val fileManger by lazy { FileManager(context) }

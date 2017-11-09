@@ -17,7 +17,7 @@ import android.view.TextureView
  * Project name : SotsuseiCameraApp
  * Date : 19 / 10 / 2017
  */
-class CameraView2 : TextureView {
+class CameraView2_kt : TextureView {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
