@@ -3,7 +3,6 @@ package jp.yuta.kohashi.sotsuseicameraapp
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import jp.yuta.kohashi.sotsuseicameraapp.netowork.ShutterImgHelper
 import jp.yuta.kohashi.sotsuseicameraapp.utils.PrefUtil
 
 /**
@@ -18,7 +17,6 @@ class App : Application() {
         context = applicationContext
 
         PrefUtil.setUp(context)
-        ShutterImgHelper.init()
     }
 
     companion object {
