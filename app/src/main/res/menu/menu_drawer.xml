@@ -3,17 +3,26 @@
     <group>
         <item
             android:id="@+id/item_01"
-            android:icon="@mipmap/ic_launcher"
-            android:title="メニュー01" />
+            android:icon="@drawable/ic_store"
+            android:title="店舗情報" />
 
-        <item
-            android:id="@+id/item_02"
-            android:icon="@mipmap/ic_launcher"
-            android:title="メニュー02"/>
+        <!--<item-->
+            <!--android:id="@+id/item_02"-->
+            <!--android:icon="@mipmap/ic_launcher"-->
+            <!--android:title="設定"/>-->
+    </group>
 
+    <group>
         <item
             android:id="@+id/item_03"
+            android:icon="@drawable/ic_logout"
+            android:title="ログアウト" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/item_debug"
             android:icon="@mipmap/ic_launcher"
-            android:title="メニュー03"/>
+            android:title="DEBUG" />
     </group>
 </menu>

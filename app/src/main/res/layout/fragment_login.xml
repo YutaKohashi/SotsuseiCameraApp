@@ -32,19 +32,21 @@
                     android:focusableInTouchMode="true"
                     android:text="店舗ログイン"
                     android:textColor="@color/text_gray_light"
-                    android:textSize="@dimen/text_size_large_more">
+                    android:textSize="@dimen/text_size_large_more_more"
+                    android:textStyle="bold">
 
                     <requestFocus />
                 </TextView>
 
                 <ImageView
                     android:id="@+id/tempImageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp" />
 
                 <EditText
+                    android:id="@+id/storeIdEditText"
                     android:layout_width="300dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center_horizontal"
@@ -55,6 +57,7 @@
                     android:paddingRight="10dp" />
 
                 <EditText
+                    android:id="@+id/storePassEditText"
                     android:layout_width="300dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center_horizontal"
@@ -66,11 +69,13 @@
 
                 <Button
                     android:id="@+id/loginButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="10dp"
-                    android:text="login" />
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="ログイン"
+                    android:textColor="@color/text_gray_light_more"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>

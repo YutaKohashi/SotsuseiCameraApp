@@ -187,6 +187,8 @@ class CameraView : SurfaceView {
             } catch (e: CameraAccessException) {
                 // エラー時の処理を記載
                 mCameraAccessExceptionCallback?.invoke()
+            } catch (e:UnsupportedOperationException){
+                mCameraAccessExceptionCallback?.invoke()
             }
         }
 
@@ -202,6 +204,9 @@ class CameraView : SurfaceView {
                     session?.setRepeatingRequest(mPreviewRequest, CaptureCallback(), null)
                 } catch (e: CameraAccessException) {
                     Log.e("CameraView", "failure stop repeating\n" + e.toString())
+                    mCameraAccessExceptionCallback?.invoke()
+                } catch (e:IllegalStateException){
+                    Log.e("CameraView", "ession has been closed; further changes are illegal.\n" + e.toString())
                     mCameraAccessExceptionCallback?.invoke()
                 }
             }

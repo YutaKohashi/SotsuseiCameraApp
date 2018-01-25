@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:id="@+id/fragment_info"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/storeNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:text="店舗情報"
+                    android:textColor="@color/text_gray_light_more"
+                    android:textSize="@dimen/text_size_large" />
+            </FrameLayout>
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="10dp"
+                android:background="@color/text_gray_dark" />
+
+
+            <LinearLayout
+                android:weightSum="3"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:textSize="@dimen/text_size_medium"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:text="店名　："
+                        android:textColor="@color/text_gray_dark"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent" />
+
+                    <jp.yuta.kohashi.sotsuseicameraapp.ui.view.AutoResizeTextView
+                        android:id="@+id/storeNameTextView2"
+                        android:text=""
+                        android:textSize="@dimen/text_size_medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:textSize="@dimen/text_size_medium"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:text="住所　："
+                        android:textColor="@color/text_gray_dark"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent" />
+
+                    <jp.yuta.kohashi.sotsuseicameraapp.ui.view.AutoResizeTextView
+                        android:id="@+id/addressTextView"
+                        android:text=""
+                        android:layout_width="match_parent"
+                        android:textSize="@dimen/text_size_medium"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:textSize="@dimen/text_size_medium"
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        android:text="店長名："
+                        android:textColor="@color/text_gray_dark"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent" />
+
+                    <jp.yuta.kohashi.sotsuseicameraapp.ui.view.AutoResizeTextView
+                        android:id="@+id/nameTextView"
+                        android:text=""
+                        android:textSize="@dimen/text_size_medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/closeButton"
+                android:textSize="@dimen/text_size_small_more"
+                android:textColor="@color/text_gray_light_more"
+                android:text="閉じる"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</FrameLayout>

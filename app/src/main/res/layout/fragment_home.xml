@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:paddingBottom="10dp"
-            android:text="スタート"
+            android:text="カメラ起動"
             android:textColor="@color/text_red"
             android:textSize="@dimen/text_size_medium_more"
             android:textStyle="bold" />
@@ -57,17 +57,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/stopTextView"
             android:layout_centerHorizontal="true"
-            android:text="(撮影:音量キー押下)"
             android:textColor="@color/text_gray_medium" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/startButton"
-        android:background="@drawable/bg_running_panel"
-        android:layout_width="250dp"
-        android:layout_height="80dp">
+    <!--<RelativeLayout-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@+id/startButton"-->
+        <!--android:background="@drawable/bg_running_panel"-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="80dp">-->
 
         <!--<RelativeLayout-->
         <!--android:layout_margin="3dp"-->
@@ -78,6 +77,6 @@
 
         <!--</RelativeLayout>-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
 </RelativeLayout>
