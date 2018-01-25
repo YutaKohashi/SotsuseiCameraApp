@@ -1,14 +1,15 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -16,6 +17,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import jp.yuta.kohashi.sotsuseicameraapp.R
 import jp.yuta.kohashi.sotsuseicameraapp.utils.DisplayUtil
+import jp.yuta.kohashi.sotsuseicameraapp.utils.ResUtil
 import jp.yuta.kohashi.sotsuseicameraapp.utils.Util
 
 /**
@@ -23,7 +25,7 @@ import jp.yuta.kohashi.sotsuseicameraapp.utils.Util
  * Project name : SotsuseiClientApp
  * Date : 30 / 10 / 2017
  */
-abstract class BaseDrawerActivity : BaseActivity() {
+abstract class BaseDrawerActivity : BaseActivity(),NavigationView.OnNavigationItemSelectedListener {
     private val TAG = BaseDrawerActivity::class.java.simpleName
 
     /**
@@ -34,7 +36,7 @@ abstract class BaseDrawerActivity : BaseActivity() {
 
     protected lateinit var mDrawerLayout: DrawerLayout
     protected lateinit var mContainerView: FrameLayout
-    protected lateinit var mNavigationView: NavigationView
+    lateinit var mNavigationView: NavigationView
 
     /**
      * メニュー項目
@@ -107,14 +109,25 @@ abstract class BaseDrawerActivity : BaseActivity() {
         mNavigationView = NavigationView(this).apply {
             layoutParams = DrawerLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.MATCH_PARENT).also { params ->
                 params.gravity = Gravity.START
+                val myColorStateList = ColorStateList(
+                        arrayOf(intArrayOf(android.R.attr.state_pressed,android.R.attr.state_enabled,android.R.attr.state_focused, android.R.attr.state_pressed,-android.R.attr.state_enabled), //1
+                                intArrayOf()
+                        ),
+                        intArrayOf(ResUtil.color(R.color.text_gray_light), //1
+                                ResUtil.color(R.color.text_gray_light)
+                        )
+                )
+                itemTextColor = myColorStateList
+                itemIconTintList = myColorStateList
             }
 
             fitsSystemWindows = false
             headerViewFromRes?.let { addHeaderView(Util.layoutRes2View(this@BaseDrawerActivity, it, this)) }
             headerViewFromView?.let { addHeaderView(it) }
             menuItemFromRes?.let { inflateMenu(it) }
-
         }
+
+        mNavigationView.setNavigationItemSelectedListener(this)
 
         mDrawerLayout.addView(mContainerView)
         mDrawerLayout.addView(mNavigationView)
@@ -122,9 +135,9 @@ abstract class BaseDrawerActivity : BaseActivity() {
         return mDrawerLayout
     }
 
-
+    @SuppressLint("RtlHardcoded")
     fun openDrawer(){
-        mDrawerLayout.openDrawer(Gravity.END)
+        mDrawerLayout.openDrawer(Gravity.LEFT)
     }
 
     fun closeDrawer(){
@@ -186,5 +199,9 @@ abstract class BaseDrawerActivity : BaseActivity() {
             if ((it as? BaseFragment)?.onBackPressed() == false) return
             else super.onBackPressed()
         } ?:super.onBackPressed()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return true
     }
 }

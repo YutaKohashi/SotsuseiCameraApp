@@ -1,6 +1,7 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui.login
 
 import android.app.Activity
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import jp.yuta.kohashi.sotsuseicameraapp.ui.BaseActivity
 import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
@@ -20,6 +21,13 @@ class LoginActivity: BaseActivity(){
 
     override val fragment: Fragment? = LoginFragment()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(intent.getBooleanExtra("successLogout",false)){
+            showSnackBar("ログアウトしました",500)
+            intent.putExtra("successLogout",false)
+        }
+    }
     override fun setEvent() {
 
     }

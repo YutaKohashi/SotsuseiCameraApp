@@ -1,8 +1,13 @@
 package jp.yuta.kohashi.sotsuseicameraapp.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.annotation.LayoutRes
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -41,6 +46,12 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var isEvent: Boolean = true
 
     open protected val FULL_SCREEN: Boolean = false
+
+    inline fun<reified T: Activity> Activity.activityStart(bundle: Bundle? = null){
+        val intent = Intent(this, T::class.java)
+        bundle?.let { intent.putExtras(it) }
+        startActivity(intent)
+    }
 
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,5 +134,17 @@ abstract class BaseActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
                         View.SYSTEM_UI_FLAG_FULLSCREEN
+    }
+
+    fun showSnackBar(text:String){
+        contentViewFromView?.let {  Snackbar.make(it,text, Snackbar.LENGTH_SHORT).show()}?:
+                mRootView?.let { Snackbar.make(it,text, Snackbar.LENGTH_SHORT).show() }?:
+                findViewById<View>(android.R.id.content)?.let { Snackbar.make(it,text, Snackbar.LENGTH_SHORT).show() }
+    }
+
+    fun showSnackBar(text:String,startTime:Long){
+        Handler(Looper.getMainLooper()).postDelayed({
+            showSnackBar(text)
+        }, startTime)
     }
 }

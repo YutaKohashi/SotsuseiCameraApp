@@ -14,10 +14,10 @@ import jp.yuta.kohashi.sotsuseicameraapp.ui.StartActivity
 class RunningActivity : BaseActivity() {
 
     companion object : StartActivity<RunningActivity> {
-        override fun start(activity: Activity)  = super.start(activity, RunningActivity::class.java)
+        override fun start(activity: Activity) = super.start(activity, RunningActivity::class.java)
     }
 
-    override  val KEEP_SCREEN_ON: Boolean = true
+    override val KEEP_SCREEN_ON: Boolean = true
     override val FULL_SCREEN: Boolean = true
 
     override val fragment: Fragment? = RunningFragment()

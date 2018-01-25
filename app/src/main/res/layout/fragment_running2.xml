@@ -4,61 +4,61 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/stopButton"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/frameLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <com.otaliastudios.cameraview.CameraView
-                app:cameraPlaySounds="false"
-                android:id="@+id/cameraView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <!--<jp.yuta.kohashi.sotsuseicameraapp.ui.view.CameraView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:id="@+id/cameraView"/>-->
-
-            <!--<jp.yuta.kohashi.sotsuseicameraapp.ui.view.CameraView-->
-            <!--android:id="@+id/cameraView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--/>-->
-        </FrameLayout>
-
-        <!--<FrameLayout-->
-        <!--android:id="@+id/frameLayout2"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1">-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/imageView"-->
+    <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
-        <!--android:src="@mipmap/ic_launcher" />-->
+        <!--android:layout_above="@+id/stopButton"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/frameLayout1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1">-->
+
+            <!--<com.otaliastudios.cameraview.CameraView-->
+                <!--app:cameraPlaySounds="false"-->
+                <!--android:id="@+id/cameraView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"/>-->
+            <!--&lt;!&ndash;<jp.yuta.kohashi.sotsuseicameraapp.ui.view.CameraView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/cameraView"/>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<jp.yuta.kohashi.sotsuseicameraapp.ui.view.CameraView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/cameraView"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;/>&ndash;&gt;-->
         <!--</FrameLayout>-->
-    </LinearLayout>
+
+        <!--&lt;!&ndash;<FrameLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/frameLayout2"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_weight="1">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/imageView"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:src="@mipmap/ic_launcher" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</FrameLayout>&ndash;&gt;-->
+    <!--</LinearLayout>-->
 
 
-    <!--<com.google.android.cameraview.CameraView-->
-    <!--android:layout_above="@+id/stopButton"-->
-    <!--android:id="@+id/cameraView"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent" />-->
+    <!--&lt;!&ndash;<com.google.android.cameraview.CameraView&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_above="@+id/stopButton"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/cameraView"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="match_parent" />&ndash;&gt;-->
 
-    <Button
-        android:visibility="gone"
-        android:id="@+id/stopButton"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:text="stop" />
+    <!--<Button-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/stopButton"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:text="stop" />-->
 </RelativeLayout>

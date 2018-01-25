@@ -3,16 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:background="@color/bg_gray_dark"
     android:orientation="vertical"
     android:padding="10dp">
 
     <ImageView
+        android:id="@+id/headerImageView"
+        android:visibility="gone"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="10dp"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -22,12 +26,21 @@
         android:textColor="@color/text_gray_light" />
 
     <TextView
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="sample txt"
-        android:drawableLeft="@drawable/ic_menu"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_gray_light" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="カメラ用アプリ"
+        android:textColor="@color/text_gray_light"
+        android:textSize="@dimen/text_size_medium_more"
+        />
 
 </LinearLayout>
