@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SotsuseiCameraApp</string>
+    <string name="app_name">watch!i-カメラ</string>
 
     <string name="camera_access_exception">カメラへのアクセスに失敗しました</string>
     <string name="no_permission">権限がありません</string>
